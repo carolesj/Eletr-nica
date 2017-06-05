@@ -1,19 +1,26 @@
-#IFNDEF _NEURONIOS_H_
-#DEFINE _NEURONIOS_H_
+#ifndef _NEURONIOS_H_
+#define _NEURONIOS_H_
 
 #define N_ENTRADAS 8
 #define N_NEURONIOS 10
 #define N_PONTOS 80
 
 
-//Cada neurônio é composto de uma matriz que é uma tabela verdade e um vetor de saída dessa tabela
+//Cada neurônio de um vetor de saída de uma tabela verdade
 typedef struct neuronio {
-    //int ** tabela_verdade;
     int * saida;
 } Neuronio;
 
 
-void Aprendizado (Neuronio * lista, int * pontos);
+void aprendizado (Neuronio * lista, int * pontos);
 
 
-#ENDIF
+void treinamento (Neuronio * lista, const char * arquivo);
+
+
+Neuronio * criaNeuronios ();
+
+
+void liberaNeuronios (Neuronio * n);
+
+#endif

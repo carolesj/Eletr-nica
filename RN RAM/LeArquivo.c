@@ -3,10 +3,9 @@
 #include "LeArquivo.h"
 #include "Neuronios.h"
 
-int * DigitalizaOndas (char * nomeArquivo, int * n_pontos) {
+int * digitalizaOndas (const char * nomeArquivo, int * n_pontos) {
     FILE * fp;
-    int * sinais, contador, i, tamanho;
-    short lido;
+    int * sinais, i, tamanho;
 
     fp = fopen (nomeArquivo, "rb");
     if (fp == NULL) return NULL;
@@ -35,7 +34,7 @@ int * DigitalizaOndas (char * nomeArquivo, int * n_pontos) {
     return sinais;
 }
 
-int ** AmostrasValidas (int * nAmostras, int * sinais, int n_pontos) {
+int ** amostrasValidas (int * nAmostras, int * sinais, int n_pontos) {
     int * aglomeracoes = NULL, bitAtual, i = 0, contador, nAglomeracoes = 0, acumulador = 0, anterior = -1;
     int ** amostrasValidas = NULL, n = 0;
 
@@ -63,8 +62,7 @@ fimDaContagem:
         if (bitAtual == 1 && *(aglomeracoes + i) >= MIN_PONTOS_VALIDOS) {
             if (anterior != -1 && (acumulador - anterior) <= N_PONTOS && anterior + N_PONTOS < n_pontos) {
                 amostrasValidas = realloc(amostrasValidas, sizeof(int *) * ++n);
-                *(amostrasValidas + n - 1) = malloc(sizeof(int) * N_PONTOS);
-                memcpy((amostrasValidas + n - 1), (sinais + anterior), N_PONTOS * sizeof(int));
+                *(amostrasValidas + n - 1) = (sinais + anterior);
             }
             anterior = acumulador;
         }
