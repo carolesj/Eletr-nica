@@ -14,13 +14,12 @@ int main(int argc, char ** argv) {
     Si = criaNeuronios();
 	
 	treinamento(Do, "Do1.raw");
-	//treinamento(Re, "Re1.raw");
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Do, "Do1.raw");
+	treinamento(Re, "Re1.raw");
+	treinamento(Mi, "Mi1.raw");
+	treinamento(Fa, "Fa1.raw");
+	treinamento(Sol, "Sol1.raw");
+	treinamento(La, "La1.raw");
+	treinamento(Si, "Si1.raw");
 
 	liberaNeuronios(Do);
 	liberaNeuronios(Re);
