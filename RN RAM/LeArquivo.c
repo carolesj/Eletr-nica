@@ -67,6 +67,7 @@ fimDaContagem:
             anterior = acumulador;
         }
         acumulador += *(aglomeracoes + i);
+        bitAtual = !bitAtual;
     }
     *nAmostras = n;
 
@@ -74,6 +75,10 @@ fimDaContagem:
     return amostrasValidas;
 }
 
+void liberaAmostras (int ** amostras, int n_amostras) {
+	free(amostras);
+	return;
+}
 
 
 

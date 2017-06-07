@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Neuronios.h"
+#include "LeArquivo.h"
+
+#define N_CLASSES 7
 
 int main(int argc, char ** argv) {
+	Neuronio ** notas;
     Neuronio * Do, * Re, * Mi, * Fa, * Sol, * La, * Si;
+    int *pontos, **entradas, n_pontos, n_amostras, resultado;
 
     Do = criaNeuronios();
     Re = criaNeuronios();
@@ -13,14 +18,37 @@ int main(int argc, char ** argv) {
     La = criaNeuronios();
     Si = criaNeuronios();
 	
-	treinamento(Do, "Do1.raw");
-	treinamento(Re, "Re1.raw");
-	treinamento(Mi, "Mi1.raw");
-	treinamento(Fa, "Fa1.raw");
-	treinamento(Sol, "Sol1.raw");
-	treinamento(La, "La1.raw");
-	treinamento(Si, "Si1.raw");
-
+	//treinamento(Do, "Do1.raw");
+	//treinamento(Re, "Re1.raw");
+	//treinamento(Mi, "Mi1.raw");
+	//treinamento(Fa, "Fa1.raw");
+	//treinamento(Sol, "Sol1.raw");
+	//treinamento(La, "La1.raw");
+	//treinamento(Si, "Si1.raw");
+	treinamento(Do, "Do2.raw");
+	treinamento(Re, "Re2.raw");
+	treinamento(Mi, "Mi2.raw");
+	treinamento(Fa, "Fa2.raw");
+	treinamento(Sol, "Sol2.raw");
+	treinamento(La, "La2.raw");
+	treinamento(Si, "Si2.raw");
+	
+	notas = malloc(sizeof(Neuronio *) * N_CLASSES);
+	*(notas) = Do;
+	*(notas + 1) = Re;
+	*(notas + 2) = Mi;
+	*(notas + 3) = Fa;
+	*(notas + 4) = Sol;
+	*(notas + 5) = La;
+	*(notas + 6) = Si;
+	
+	nUns(notas);
+	
+	pontos = digitalizaOndas("FaTeste.raw", &n_pontos);
+	entradas = amostrasValidas(&n_amostras, pontos, n_pontos);
+	resultado = Resultado(notas, *(entradas + 2));
+	printf("\n%d\n", resultado);
+	
 	liberaNeuronios(Do);
 	liberaNeuronios(Re);
 	liberaNeuronios(Mi);
@@ -28,6 +56,9 @@ int main(int argc, char ** argv) {
 	liberaNeuronios(Sol);
 	liberaNeuronios(La);
 	liberaNeuronios(Si);
+	free(notas);
+	liberaAmostras(entradas, n_amostras);
+	free(pontos);
     
     return 0;
 }
