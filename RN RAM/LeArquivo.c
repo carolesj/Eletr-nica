@@ -81,6 +81,3 @@ void liberaAmostras (int ** amostras, int n_amostras) {
 }
 
 
-
-
-

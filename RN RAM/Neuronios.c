@@ -31,26 +31,28 @@ void treinamento (Neuronio * lista, const char * arquivo) {
 	free(amostras);
 }
 
-int Resultado (Neuronio ** n, int * entrada) {
-	int i, j, k, indice = 0, inicio, maior_valor, maior_indice;
+int Resultado (Neuronio ** n, int ** entrada, int n_entradas) {
+	int i, j, k, l, indice = 0, inicio, maior_valor, maior_indice;
 	int * n_compatibilidades = NULL;
 	
 	n_compatibilidades = calloc(N_CLASSES, sizeof(int));
 	
-	//percorre a matriz de neuronios
-	for (i = 0; i < N_CLASSES; i++) {
-		//percorre os vetores de neuronios
-		for (j = 0; j < N_NEURONIOS; j++) {
-			//percorre o vetor de amostras de 8 em 8 e salva o valor numérico em indice
-			inicio = j * N_ENTRADAS;
-			indice = 0;
-			for (k = 0; k < N_ENTRADAS; k++) {
-				indice = indice + (*(entrada + inicio + k) * (pow(2, N_ENTRADAS - k - 1)));
-			}
-			//se o vetor de saída daquele neurônio na posição indice for igual a um, incrementa o número
-			//de compatibilidades com aquele vetor de neurônios
-			if(*((*(n + i) + j)->saida + indice) == 1) {
-				*(n_compatibilidades + i) += 1; 
+	for (l = 0; l < n_entradas; l++) {
+		//percorre a matriz de neuronios
+		for (i = 0; i < N_CLASSES; i++) {
+			//percorre os vetores de neuronios
+			for (j = 0; j < N_NEURONIOS; j++) {
+				//percorre o vetor de amostras de 8 em 8 e salva o valor numérico em indice
+				inicio = j * N_ENTRADAS;
+				indice = 0;
+				for (k = 0; k < N_ENTRADAS; k++) {
+					indice = indice + (*(*(entrada + l) + inicio + k) * (pow(2, N_ENTRADAS - k - 1)));
+				}
+				//se o vetor de saída daquele neurônio na posição indice for igual a um, incrementa o número
+				//de compatibilidades com aquele vetor de neurônios
+				if(*((*(n + i) + j)->saida + indice) == 1) {
+					*(n_compatibilidades + i) += 1; 
+				}
 			}
 		}
 	}

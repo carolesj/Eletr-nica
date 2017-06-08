@@ -18,13 +18,13 @@ int main(int argc, char ** argv) {
     La = criaNeuronios();
     Si = criaNeuronios();
 	
-	//treinamento(Do, "Do1.raw");
-	//treinamento(Re, "Re1.raw");
-	//treinamento(Mi, "Mi1.raw");
-	//treinamento(Fa, "Fa1.raw");
-	//treinamento(Sol, "Sol1.raw");
-	//treinamento(La, "La1.raw");
-	//treinamento(Si, "Si1.raw");
+	/*treinamento(Do, "Do1.raw");
+	treinamento(Re, "Re1.raw");
+	treinamento(Mi, "Mi1.raw");
+	treinamento(Fa, "Fa1.raw");
+	treinamento(Sol, "Sol1.raw");
+	treinamento(La, "La1.raw");
+	treinamento(Si, "Si1.raw");*/
 	treinamento(Do, "Do2.raw");
 	treinamento(Re, "Re2.raw");
 	treinamento(Mi, "Mi2.raw");
@@ -32,6 +32,14 @@ int main(int argc, char ** argv) {
 	treinamento(Sol, "Sol2.raw");
 	treinamento(La, "La2.raw");
 	treinamento(Si, "Si2.raw");
+	/*treinamento(Do, "Do3.raw");
+	treinamento(Re, "Re3.raw");
+	treinamento(Mi, "Mi3.raw");
+	treinamento(Fa, "Fa3.raw");
+	treinamento(Sol, "Sol3.raw");
+	treinamento(La, "La3.raw");
+	treinamento(Si, "Si3.raw");*/
+	
 	
 	notas = malloc(sizeof(Neuronio *) * N_CLASSES);
 	*(notas) = Do;
@@ -44,9 +52,9 @@ int main(int argc, char ** argv) {
 	
 	nUns(notas);
 	
-	pontos = digitalizaOndas("FaTeste.raw", &n_pontos);
+	pontos = digitalizaOndas("MiTeste.raw", &n_pontos);
 	entradas = amostrasValidas(&n_amostras, pontos, n_pontos);
-	resultado = Resultado(notas, *(entradas + 2));
+	resultado = Resultado(notas, entradas, n_amostras);
 	printf("\n%d\n", resultado);
 	
 	liberaNeuronios(Do);
