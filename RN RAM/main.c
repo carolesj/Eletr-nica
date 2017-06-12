@@ -8,7 +8,8 @@
 int main(int argc, char ** argv) {
 	Neuronio ** notas;
     Neuronio * Do, * Re, * Mi, * Fa, * Sol, * La, * Si;
-    int *pontos, **entradas, n_pontos, n_amostras, resultado;
+    int **pontos, ***entradas;
+    int n_pontos1, n_pontos2, n_pontos3, parada1, parada2, parada3, n_amostras, resultado;
 
     Do = criaNeuronios();
     Re = criaNeuronios();
@@ -29,16 +30,16 @@ int main(int argc, char ** argv) {
 	treinamento(Re, "Re2.raw");
 	treinamento(Mi, "Mi2.raw");
 	treinamento(Fa, "Fa2.raw");
-	treinamento(Sol, "Sol2.raw");
-	treinamento(La, "La2.raw");
-	treinamento(Si, "Si2.raw");
-	/*treinamento(Do, "Do3.raw");
-	treinamento(Re, "Re3.raw");
-	treinamento(Mi, "Mi3.raw");
-	treinamento(Fa, "Fa3.raw");
+	//treinamento(Sol, "Sol2.raw");
+	//treinamento(La, "La2.raw");
+	//treinamento(Si, "Si2.raw");
+	//treinamento(Do, "Do3.raw");
+	//treinamento(Re, "Re3.raw");
+	//treinamento(Mi, "Mi3.raw");
+	//treinamento(Fa, "Fa3.raw");
 	treinamento(Sol, "Sol3.raw");
 	treinamento(La, "La3.raw");
-	treinamento(Si, "Si3.raw");*/
+	treinamento(Si, "Si3.raw");
 	
 	
 	notas = malloc(sizeof(Neuronio *) * N_CLASSES);
@@ -52,11 +53,17 @@ int main(int argc, char ** argv) {
 	
 	nUns(notas);
 	
-	pontos = digitalizaOndas("MiTeste.raw", &n_pontos);
-	entradas = amostrasValidas(&n_amostras, pontos, n_pontos);
-	resultado = Resultado(notas, entradas, n_amostras);
+	pontos = malloc(sizeof(int *) * N_THRESHOLD);
+	*pontos = digitalizaOndas("DoTeste.raw", &n_pontos1, 0.0);
+	*(pontos + 1) = digitalizaOndas("DoTeste.raw", &n_pontos2, 2.5);
+	*(pontos + 2) = digitalizaOndas("DoTeste.raw", &n_pontos3, -2.5);
+	entradas = malloc(sizeof(int **) * N_THRESHOLD);
+	*entradas = amostrasValidas(&n_amostras, *pontos, n_pontos1, &parada1);
+	*(entradas + 1) = amostrasValidas(&n_amostras, *(pontos + 1) + parada1, n_pontos2 - parada1, &parada2);
+	*(entradas + 2) = amostrasValidas(&n_amostras, *(pontos + 2) + parada1 + parada2, n_pontos3 - parada1 - parada2, &parada3);
+	resultado = Resultado(notas, entradas, N_AMOSTRAS);
 	printf("\n%d\n", resultado);
-	
+		
 	liberaNeuronios(Do);
 	liberaNeuronios(Re);
 	liberaNeuronios(Mi);
@@ -65,17 +72,11 @@ int main(int argc, char ** argv) {
 	liberaNeuronios(La);
 	liberaNeuronios(Si);
 	free(notas);
-	liberaAmostras(entradas, n_amostras);
+	liberaAmostras(entradas);
 	free(pontos);
     
     return 0;
 }
-
-
-
-
-
-
 
 
 

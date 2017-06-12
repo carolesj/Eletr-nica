@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
-#define N_CLASSES 7
 
 void aprendizado (Neuronio * lista, int * pontos) {
     int atual, i, j;
@@ -20,38 +19,64 @@ void aprendizado (Neuronio * lista, int * pontos) {
 }
 
 void treinamento (Neuronio * lista, const char * arquivo) {
-	int n_pontos, n_amostras, i;
-	int * pontos, ** amostras;
-	pontos = digitalizaOndas(arquivo, &n_pontos);
-	amostras = amostrasValidas(&n_amostras, pontos, n_pontos);
-	for (i = 0; i < n_amostras; i++) {
-		aprendizado(lista, *(amostras + i));
+	int n_pontos, n_amostras, i, j, k, parada1, parada2, parada3;
+	int ** pontos, *** amostras;
+	pontos = malloc(sizeof(int *) * N_THRESHOLD);
+	amostras = malloc(sizeof(int **) * N_THRESHOLD);
+	//digitaliza a onda com o threshold no 0
+	*(pontos) = digitalizaOndas(arquivo, &n_pontos, 0.0);
+	//digitaliza a onda com o threshold no 2.5
+	*(pontos + 1) = digitalizaOndas(arquivo, &n_pontos, 2.5);
+	//digitaliza a onda com o threshold no -2.5
+	*(pontos + 2) = digitalizaOndas(arquivo, &n_pontos, -2.5);
+	//tira as primeiras cem amostras do vetor e recebe onde elas acabam
+	*(amostras) = amostrasValidas(&n_amostras, *pontos, n_pontos, &parada1);
+	printf("%s\n", arquivo);
+	printf("Primeiras: %d amostras\n", n_amostras);
+	//tira as próximas cem amostras a partir de onde acabaram as outras, e recebo onde estas acabam
+	*(amostras + 1) = amostrasValidas(&n_amostras, (*(pontos + 1) + parada1), (n_pontos - parada1), &parada2);
+	printf("Segundas: %d amostras\n", n_amostras);
+	//tira as seguintes cem amostras depois do fim da anterior
+	*(amostras + 2) = amostrasValidas(&n_amostras, (*(pontos + 2) + parada1 + parada2), (n_pontos - parada1 - parada2), &parada3);
+	printf("Terceiras: %d amostras\n\n", n_amostras);
+	for (i = 0; i < N_THRESHOLD; i++) {
+		for (j = 0; j < N_AMOSTRAS; j++) {
+			aprendizado(lista, *(*(amostras + i) + j));
+			printf("%d - %d: ", i, j);
+			for (k = 0; k < N_PONTOS; k++) {
+				printf("%d ", *(*(*(amostras + i) + j) + k));
+			}
+			printf("\n");
+		}
+		free(*(amostras + i));
 	}
-	free(pontos);
 	free(amostras);
+
 }
 
-int Resultado (Neuronio ** n, int ** entrada, int n_entradas) {
-	int i, j, k, l, indice = 0, inicio, maior_valor, maior_indice;
+int Resultado (Neuronio ** n, int *** entrada, int n_entradas) {
+	int i, j, k, l, m, indice = 0, inicio, maior_valor, maior_indice;
 	int * n_compatibilidades = NULL;
 	
 	n_compatibilidades = calloc(N_CLASSES, sizeof(int));
 	
-	for (l = 0; l < n_entradas; l++) {
-		//percorre a matriz de neuronios
-		for (i = 0; i < N_CLASSES; i++) {
-			//percorre os vetores de neuronios
-			for (j = 0; j < N_NEURONIOS; j++) {
-				//percorre o vetor de amostras de 8 em 8 e salva o valor numérico em indice
-				inicio = j * N_ENTRADAS;
-				indice = 0;
-				for (k = 0; k < N_ENTRADAS; k++) {
-					indice = indice + (*(*(entrada + l) + inicio + k) * (pow(2, N_ENTRADAS - k - 1)));
-				}
-				//se o vetor de saída daquele neurônio na posição indice for igual a um, incrementa o número
-				//de compatibilidades com aquele vetor de neurônios
-				if(*((*(n + i) + j)->saida + indice) == 1) {
-					*(n_compatibilidades + i) += 1; 
+	for (m = 0; m < N_THRESHOLD; m++) {
+		for (l = 0; l < n_entradas; l++) {
+			//percorre a matriz de neuronios
+			for (i = 0; i < N_CLASSES; i++) {
+				//percorre os vetores de neuronios
+				for (j = 0; j < N_NEURONIOS; j++) {
+					//percorre o vetor de amostras de 8 em 8 e salva o valor numérico em indice
+					inicio = j * N_ENTRADAS;
+					indice = 0;
+					for (k = 0; k < N_ENTRADAS; k++) {
+						indice = indice + (*(*(*(entrada + m) + l) + inicio + k) * (pow(2, N_ENTRADAS - k - 1)));
+					}
+					//se o vetor de saída daquele neurônio na posição indice for igual a um, incrementa o número
+					//de compatibilidades com aquele vetor de neurônios
+					if(*((*(n + i) + j)->saida + indice) == 1) {
+						*(n_compatibilidades + i) += 1; 
+					}
 				}
 			}
 		}

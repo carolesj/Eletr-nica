@@ -2,10 +2,12 @@
 #define _NEURONIOS_H_
 
 #define N_ENTRADAS 8
-#define N_NEURONIOS 30
-#define N_PONTOS (N_ENTRADAS * N_NEURONIOS)
+#define N_NEURONIOS 38
+#define N_PONTOS 100
 #define N_LINHAS (1 << N_ENTRADAS)
-
+#define N_THRESHOLD 3
+#define N_AMOSTRAS 100
+#define N_CLASSES 7
 
 //Cada neurônio de um vetor de saída de uma tabela verdade
 typedef struct neuronio {
@@ -28,6 +30,6 @@ Neuronio * criaNeuronios ();
 void liberaNeuronios (Neuronio * n);
 
 
-int Resultado (Neuronio ** n, int ** entrada, int n_entradas);
+int Resultado (Neuronio ** n, int *** entrada, int n_entradas);
 
 #endif

@@ -3,7 +3,7 @@
 #include "LeArquivo.h"
 #include "Neuronios.h"
 
-int * digitalizaOndas (const char * nomeArquivo, int * n_pontos) {
+int * digitalizaOndas (const char * nomeArquivo, int * n_pontos, float threshold) {
     FILE * fp;
     int * sinais, i, tamanho;
 
@@ -22,7 +22,7 @@ int * digitalizaOndas (const char * nomeArquivo, int * n_pontos) {
 
     //Se o valor do ponto for menor ou igual a zero, esse valor torna-se zero. Se for maior que zero, o valor torna-se um.
     for (i = 0; i < tamanho; i++) {
-        if (*(sinais + i) <= 0) {
+        if (*(sinais + i) <= threshold) {
             *(sinais + i) = 0;
         } else {
             *(sinais + i) = 1;
@@ -34,7 +34,7 @@ int * digitalizaOndas (const char * nomeArquivo, int * n_pontos) {
     return sinais;
 }
 
-int ** amostrasValidas (int * nAmostras, int * sinais, int n_pontos) {
+int ** amostrasValidas (int * nAmostras, int * sinais, int n_pontos, int * parada) {
     int * aglomeracoes = NULL, bitAtual, i = 0, contador, nAglomeracoes = 0, acumulador = 0, anterior = -1;
     int ** amostrasValidas = NULL, n = 0;
 
@@ -59,6 +59,9 @@ fimDaContagem:
         //verifica se é uma aglomeração de uns válida, se for, salva a posição onde começa essa aglomeração.
         //depois, verifica se existem pelo menos N_ENTRADAS * N_NEURONIOS pontos na amostra. Se existirem,
         //salva a amostra
+        if (n == N_PONTOS) {
+			goto cem_amostras;
+		}
         if (bitAtual == 1 && *(aglomeracoes + i) >= MIN_PONTOS_VALIDOS) {
             if (anterior != -1 && (acumulador - anterior) <= N_PONTOS && anterior + N_PONTOS < n_pontos) {
                 amostrasValidas = realloc(amostrasValidas, sizeof(int *) * ++n);
@@ -69,13 +72,19 @@ fimDaContagem:
         acumulador += *(aglomeracoes + i);
         bitAtual = !bitAtual;
     }
+cem_amostras:
     *nAmostras = n;
+    *parada = acumulador;
 
     free(aglomeracoes);
     return amostrasValidas;
 }
 
-void liberaAmostras (int ** amostras, int n_amostras) {
+void liberaAmostras (int *** amostras) {
+	int i;
+	for (i = 0; i < N_THRESHOLD; i++) {
+		free(*(amostras + i));
+	}
 	free(amostras);
 	return;
 }
