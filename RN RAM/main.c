@@ -51,7 +51,7 @@ int main(int argc, char ** argv) {
 	*(notas + 5) = La;
 	*(notas + 6) = Si;
 	
-	nUns(notas);
+	//imprimeNoArquivo(notas);
 	
 	pontos = malloc(sizeof(int *) * N_THRESHOLD);
 	*pontos = digitalizaOndas("DoTeste.raw", &n_pontos1, 0.0);
@@ -63,7 +63,9 @@ int main(int argc, char ** argv) {
 	*(entradas + 2) = amostrasValidas(&n_amostras, *(pontos + 2) + parada1 + parada2, n_pontos3 - parada1 - parada2, &parada3);
 	resultado = Resultado(notas, entradas, N_AMOSTRAS);
 	printf("\n%d\n", resultado);
-		
+	
+	nUns(notas);
+	
 	liberaNeuronios(Do);
 	liberaNeuronios(Re);
 	liberaNeuronios(Mi);

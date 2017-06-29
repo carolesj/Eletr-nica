@@ -80,6 +80,26 @@ cem_amostras:
     return amostrasValidas;
 }
 
+void imprimeNoArquivo (Neuronio ** RN) {
+	FILE * fp;
+	//cria um arquivo chamado RNRAM que vai conter a RN treinada
+	fp = fopen("RNRAMDIRETO.txt", "w");
+	int i, j, k;
+	
+	//percorre toda a malha de neurônios e os imprime no arquivo
+	for (i = 0; i < N_CLASSES; i++) {
+		for (j = 0; j < N_NEURONIOS; j++) {
+			for (k = 0; k < N_LINHAS; k++) {
+				fprintf(fp, "%d ", *(((*(RN + i) + j) -> saida) + k)); 
+			}
+		}
+	}
+	
+	fclose(fp);
+	
+}
+
+
 void liberaAmostras (int *** amostras) {
 	int i;
 	for (i = 0; i < N_THRESHOLD; i++) {
