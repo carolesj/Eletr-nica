@@ -3,6 +3,7 @@
 #include "Neuronios.h"
 #include "LeArquivo.h"
 
+#define ARQUIVO_TESTE "SiTeste.raw"
 #define N_CLASSES 7
 
 int main(int argc, char ** argv) {
@@ -54,9 +55,9 @@ int main(int argc, char ** argv) {
 	//imprimeNoArquivo(notas);
 	
 	pontos = malloc(sizeof(int *) * N_THRESHOLD);
-	*pontos = digitalizaOndas("DoTeste.raw", &n_pontos1, 0.0);
-	*(pontos + 1) = digitalizaOndas("DoTeste.raw", &n_pontos2, 2.5);
-	*(pontos + 2) = digitalizaOndas("DoTeste.raw", &n_pontos3, -2.5);
+	*pontos = digitalizaOndas(ARQUIVO_TESTE, &n_pontos1, 0.0);
+	*(pontos + 1) = digitalizaOndas(ARQUIVO_TESTE, &n_pontos2, 2.5);
+	*(pontos + 2) = digitalizaOndas(ARQUIVO_TESTE, &n_pontos3, -2.5);
 	entradas = malloc(sizeof(int **) * N_THRESHOLD);
 	*entradas = amostrasValidas(&n_amostras, *pontos, n_pontos1, &parada1);
 	*(entradas + 1) = amostrasValidas(&n_amostras, *(pontos + 1) + parada1, n_pontos2 - parada1, &parada2);

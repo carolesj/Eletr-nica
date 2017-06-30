@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "LeArquivo.h"
 #include "Neuronios.h"
 
@@ -8,7 +9,7 @@ int * digitalizaOndas (const char * nomeArquivo, int * n_pontos, float threshold
     int * sinais, i, tamanho;
 
     fp = fopen (nomeArquivo, "rb");
-    if (fp == NULL) return NULL;
+    assert(fp != NULL);
 
     fseek(fp, 0, SEEK_END);
     tamanho = ftell(fp);

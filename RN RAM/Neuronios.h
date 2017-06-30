@@ -1,8 +1,8 @@
 #ifndef _NEURONIOS_H_
 #define _NEURONIOS_H_
 
-#define N_ENTRADAS 8
-#define N_NEURONIOS 38
+#define N_ENTRADAS 3
+#define N_NEURONIOS 15
 #define N_PONTOS 100
 #define N_LINHAS (1 << N_ENTRADAS)
 #define N_THRESHOLD 3
