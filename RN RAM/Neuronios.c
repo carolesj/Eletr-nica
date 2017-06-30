@@ -51,7 +51,10 @@ void treinamento (Neuronio * lista, const char * arquivo) {
 		free(*(amostras + i));
 	}
 	free(amostras);
-
+	for (i = 0; i < N_THRESHOLD; i++) {
+		free(*(pontos + i));
+	}
+	free(pontos);
 }
 
 int Resultado (Neuronio ** n, int *** entrada, int n_entradas) {

@@ -1,7 +1,7 @@
 #ifndef _NEURONIOS_H_
 #define _NEURONIOS_H_
 
-#define N_ENTRADAS 3
+#define N_ENTRADAS 6
 #define N_NEURONIOS 15
 #define N_PONTOS 100
 #define N_LINHAS (1 << N_ENTRADAS)

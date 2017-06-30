@@ -3,10 +3,11 @@
 #include "Neuronios.h"
 #include "LeArquivo.h"
 
-#define ARQUIVO_TESTE "SiTeste.raw"
+#define ARQUIVO_TESTE "DoTeste.raw"
 #define N_CLASSES 7
 
 int main(int argc, char ** argv) {
+	int i;
 	Neuronio ** notas;
     Neuronio * Do, * Re, * Mi, * Fa, * Sol, * La, * Si;
     int **pontos, ***entradas;
@@ -76,6 +77,9 @@ int main(int argc, char ** argv) {
 	liberaNeuronios(Si);
 	free(notas);
 	liberaAmostras(entradas);
+	for (i = 0; i < N_THRESHOLD; i++) {
+		free(*(pontos + i));
+	}
 	free(pontos);
     
     return 0;
