@@ -5,6 +5,9 @@ all : $(OBJECTS) LeArquivo.h Neuronios.h
 
 test: testeRAM.o Neuronios.o LeArquivo.o
 	gcc $(CFLAGS) $^ -o testa -lm
+	
+%.o: %.c LeArquivo.h Neuronios.h
+	gcc $(CFLAGS) $< -c
 
 run : 
 	@./RAM
