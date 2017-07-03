@@ -84,18 +84,25 @@ cem_amostras:
 void imprimeNoArquivo (Neuronio ** RN) {
 	FILE * fp;
 	//cria um arquivo chamado RNRAM que vai conter a RN treinada
-	fp = fopen("RNRAMDIRETO.txt", "w");
-	int i, j, k;
-	
+	fp = fopen("testenimpressoes.txt", "w");
+	int i, j, k, l, contador = 0;
+	unsigned char atual;
 	//percorre toda a malha de neurônios e os imprime no arquivo
 	for (i = 0; i < N_CLASSES; i++) {
 		for (j = 0; j < N_NEURONIOS; j++) {
-			for (k = 0; k < N_LINHAS; k++) {
-				fprintf(fp, "%d ", *(((*(RN + i) + j) -> saida) + k)); 
+			for (k = 0; k < N_LINHAS ; k += N_ENTRADAS) {
+				atual = 0;
+				for (l = 0; l < N_ENTRADAS; l++) {
+					atual |= *((*(RN + i) + j) -> saida + k + l) << (N_ENTRADAS - 1 - l);
+				}
+				fprintf(fp, "%u ", atual);
+				contador++;
+				//fputc(atual, fp);
 			}
 		}
 	}
 	
+	printf("Número de sinais impressos: %d\n", contador);
 	fclose(fp);
 	
 }

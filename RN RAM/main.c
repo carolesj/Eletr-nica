@@ -53,7 +53,7 @@ int main(int argc, char ** argv) {
 	*(notas + 5) = La;
 	*(notas + 6) = Si;
 	
-	//imprimeNoArquivo(notas);
+	imprimeNoArquivo(notas);
 	
 	pontos = malloc(sizeof(int *) * N_THRESHOLD);
 	*pontos = digitalizaOndas(ARQUIVO_TESTE, &n_pontos1, 0.0);
